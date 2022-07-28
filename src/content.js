@@ -54,6 +54,9 @@ if (html) {
 
 const RETRY_TIMEOUT_MS = 50;
 
+/* Gmail will relayout the page soon after the first load, so let's wait before the first relayout */
+const FIRST_BUNDLE_TIMEOUT = 2000
+
 let isFreshPage = false;
 const handleFreshPage = e => isFreshPage = true;
 
@@ -141,7 +144,7 @@ function handleContentLoaded() {
     logDebugMessage('Handle content loaded event');
     const bundleCurrentPage = supportsBundling(window.location.href);
     logDebugMessage(`Url: ${window.location.href}, page supports bundling: ${bundleCurrentPage}`);
-    tryBundling(0, bundleCurrentPage);
+    setTimeout(() => { tryBundling(0, bundleCurrentPage) }, FIRST_BUNDLE_TIMEOUT);
 }
 
 function tryBundling(i, bundleCurrentPage) {
